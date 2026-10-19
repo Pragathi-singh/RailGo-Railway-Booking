@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
+    <meta name="description" content="Create a RailGo demo account."><title><%= title %> | RailGo</title>
+    <link rel="stylesheet" href="<%= asset('css/style.css') %>"><script src="<%= asset('js/script.js') %>" defer></script>
+</head>
+<body>
+<main class="auth-layout" id="main-content">
+    <%- include('partials/auth-aside', { heading: 'Join RailGo Today!', description: 'Make room for the journeys you have been dreaming about. Getting started is simple.', highlights: ['Keep your travel details together', 'Plan trips with ease', 'Find inspiration for your next stop'] }) %>
+    <section class="auth-main">
+        <div class="auth-form-wrap auth-form-wrap--signup">
+            <a class="mobile-brand" href="/home"><span class="brand__mark" aria-hidden="true">RG</span><span class="brand__words"><span class="brand__name">Rail<span>Go</span></span><span class="brand__tagline">Your Journey, Our Priority.</span></span></a>
+            <a class="back-home" href="/home"><span aria-hidden="true">&larr;</span> Back to home</a>
+            <p class="eyebrow">A NEW JOURNEY STARTS HERE</p><h1 id="signup-title">Create your account</h1><p class="auth-intro">Join RailGo and bring your travel plans together.</p>
+            <% if (errors.form) { %><p class="form-alert" role="alert"><%= errors.form %></p><% } %>
+            <form action="/signup" method="post" class="auth-form" data-signup-form novalidate>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="field"><label for="full-name">Full name</label><input id="full-name" name="fullName" type="text" autocomplete="name" maxlength="100" value="<%= values.fullName || '' %>" required>
+                    <% if (errors.fullName) { %><span class="field-error"><%= errors.fullName %></span><% } %>
+                </div>
+                <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" value="<%= values.email || '' %>" required>
+                    <% if (errors.email) { %><span class="field-error"><%= errors.email %></span><% } %>
+                </div>
+                <div class="field"><label for="mobile">Mobile number</label><input id="mobile" name="mobile" type="tel" autocomplete="tel-national" inputmode="numeric" maxlength="14" placeholder="10-digit Indian mobile number" value="<%= values.mobile || '' %>" required>
+                    <% if (errors.mobile) { %><span class="field-error"><%= errors.mobile %></span><% } else { %><span class="field-hint">Numbers beginning with 6, 7, 8 or 9</span><% } %>
+                </div>
+                <div class="field"><label for="password">Password</label><div class="password-control"><input id="password" name="password" type="password" autocomplete="new-password" required aria-describedby="password-hint"><button class="password-toggle" type="button" data-password-toggle="password" aria-label="Show password" aria-pressed="false">Show</button></div>
+                    <% if (errors.password) { %><span class="field-error"><%= errors.password %></span><% } else { %><span class="field-hint" id="password-hint">8+ characters with uppercase, lowercase and a number</span><% } %>
+                </div>
+                <div class="field"><label for="confirm-password">Confirm password</label><div class="password-control"><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required><button class="password-toggle" type="button" data-password-toggle="confirm-password" aria-label="Show password" aria-pressed="false">Show</button></div>
+                    <% if (errors.confirmPassword) { %><span class="field-error"><%= errors.confirmPassword %></span><% } %>
+                </div>
+                <div class="field field--terms"><label class="checkbox-label checkbox-label--terms"><input type="checkbox" name="terms" value="yes" <%= values.termsAccepted ? 'checked' : '' %> required> <span>I agree to the <a href="/home#demo-terms">demo terms and conditions</a>.</span></label>
+                    <% if (errors.terms) { %><span class="field-error"><%= errors.terms %></span><% } %>
+                </div>
+                <p class="demo-note demo-note--left">Local demonstration only. Do not submit real personal information or a reused password.</p>
+                <button class="button button--full" type="submit">Create Account <span aria-hidden="true">&rarr;</span></button>
+            </form>
+            <p class="auth-switch">Already have an account? <a href="/login">Login</a></p>
+        </div>
+    </section>
+</main>
+<%- include('partials/footer') %>

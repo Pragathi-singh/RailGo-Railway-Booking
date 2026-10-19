@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
+    <meta name="description" content="Your RailGo demo account."><title><%= title %> | RailGo</title>
+    <link rel="stylesheet" href="<%= asset('css/style.css') %>"><script src="<%= asset('js/script.js') %>" defer></script>
+</head>
+<body>
+<%- include('partials/header') %>
+<main id="main-content" class="dashboard page-width">
+    <% if (flash) { %><p class="notice notice--success" role="status"><%= flash.message %></p><% } %>
+    <p class="eyebrow">YOUR RAILGO ACCOUNT</p>
+    <h1>Welcome, <%= currentUser.fullName %>.</h1>
+    <p class="dashboard__intro">This is your protected RailGo demo welcome page. Account data is held only in memory for this running server.</p>
+    <section class="account-card" aria-labelledby="account-details">
+        <div><p class="eyebrow">ACCOUNT DETAILS</p><h2 id="account-details">Your profile</h2></div>
+        <dl>
+            <div><dt>Full name</dt><dd><%= currentUser.fullName %></dd></div>
+            <div><dt>Email</dt><dd><%= currentUser.email %></dd></div>
+            <div><dt>Mobile</dt><dd><%= currentUser.mobile %></dd></div>
+        </dl>
+        <p class="notice notice--info">Bookings, train schedules, PNR status and payments are not connected in this college project.</p>
+        <a class="button" href="/home#search">Explore the search demo</a>
+    </section>
+</main>
+<%- include('partials/footer') %>

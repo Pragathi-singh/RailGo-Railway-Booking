@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
+    <meta name="description" content="RailGo could not complete this request."><title><%= title %> | RailGo</title>
+    <link rel="stylesheet" href="<%= asset('css/style.css') %>">
+</head>
+<body>
+<%- include('partials/header') %>
+<main id="main-content" class="help-page page-width">
+    <section class="help-card">
+        <p class="eyebrow">REQUEST NOT COMPLETED</p><h1><%= title %></h1><p><%= message %></p>
+        <a class="button" href="/home">Return to RailGo home</a>
+    </section>
+</main>
+<%- include('partials/footer') %>
