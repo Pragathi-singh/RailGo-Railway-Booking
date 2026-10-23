@@ -1,0 +1,1 @@
+<jsp:include page="auth.jsp"><jsp:param name="title" value="Create account"/><jsp:param name="heading" value="Create your account"/><jsp:param name="eyebrow" value="A NEW JOURNEY STARTS HERE"/><jsp:param name="intro" value="Bring your travel plans together with RailGo."/><jsp:param name="formPage" value="signup-form.jsp"/></jsp:include>
