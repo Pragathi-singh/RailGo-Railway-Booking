@@ -11,7 +11,7 @@ function csrfFrom(html) {
     return match[1];
 }
 
-test('landing page, demo search validation, and demo response work', async () => {
+test('landing page, search validation, and journey response work', async () => {
     const agent = request.agent(createApp({ sessionSecret: 'test-session-secret-with-sufficient-length' }));
     const home = await agent.get('/').expect(302).expect('Location', '/home');
     assert.equal(home.status, 302);
@@ -33,7 +33,7 @@ test('landing page, demo search validation, and demo response work', async () =>
         _csrf: csrfFrom(invalid.text), from: 'Mumbai Central', to: 'New Delhi',
         journeyDate: '2099-01-01', travelClass: 'Sleeper'
     }).expect(200);
-    assert.match(valid.text, /live train availability is not connected/i);
+    assert.match(valid.text, /live train results are not available/i);
     assert.doesNotMatch(valid.text, /confirmed booking|seats available/i);
 });
 

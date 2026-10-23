@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['confirm_password'] = 'Your passwords do not match.';
     }
     if (!$termsAccepted) {
-        $errors['terms'] = 'Please accept the terms to create your demo account.';
+        $errors['terms'] = 'Please accept the terms to create your account.';
     }
 
     if ($errors === []) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($created) {
-            add_flash('success', 'Your RailGo demo account is ready. Please log in.');
+            add_flash('success', 'Your RailGo account is ready. Please sign in.');
             redirect('login.php');
         }
         if (!$created && !isset($errors['form'])) {
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-render_page_head('Create your account', 'Create a RailGo demo account to explore the authentication experience.');
+render_page_head('Create your account', 'Create your RailGo account and keep your journeys together.');
 ?>
 <main class="auth-layout" id="main-content">
     <?php render_auth_aside(
@@ -140,7 +140,7 @@ render_page_head('Create your account', 'Create a RailGo demo account to explore
                 <div class="field field--terms">
                     <label class="checkbox-label checkbox-label--terms">
                         <input type="checkbox" name="terms" value="1" <?= post_string('terms') === '1' ? 'checked' : '' ?> required>
-                        <span>I agree to the <a href="index.php#demo-terms">demo terms and conditions</a>.</span>
+                        <span>I agree to the <a href="index.php#terms">terms and conditions</a>.</span>
                     </label>
                     <?php if (isset($errors['terms'])): ?>
                         <span class="field-error"><?= e($errors['terms']) ?></span>
@@ -149,7 +149,6 @@ render_page_head('Create your account', 'Create a RailGo demo account to explore
                 <button class="button button--full" type="submit">Create Account <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-switch">Already have an account? <a href="login.php">Login</a></p>
-            <p class="demo-note">Local college demo only. Do not use real personal or password data.</p>
         </div>
     </section>
 </main>

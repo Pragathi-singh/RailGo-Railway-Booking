@@ -35,12 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-render_page_head('Login', 'Log in to your RailGo demo account.');
+render_page_head('Login', 'Sign in to continue your RailGo journey.');
 ?>
 <main class="auth-layout" id="main-content">
     <?php render_auth_aside(
         'Welcome Back!',
-        'Sign in to explore the account experience. Booking management and live PNR services are not connected in this local demo.',
+        'Sign in to keep your travel plans together and continue your journey.',
         ['Manage your bookings', 'Check PNR status', 'Explore new destinations'],
         'The journey is the destination.'
     ); ?>
@@ -49,7 +49,7 @@ render_page_head('Login', 'Log in to your RailGo demo account.');
             <a class="mobile-brand" href="index.php"><?php render_brand(); ?></a>
             <a class="back-home" href="index.php"><span aria-hidden="true">&larr;</span> Back to home</a>
             <p class="eyebrow">GOOD TO SEE YOU AGAIN</p>
-            <h1 id="login-title">Login to RailGo</h1>
+            <h1 id="login-title">Sign in to RailGo</h1>
             <p class="auth-intro">Enter your details to continue your journey.</p>
             <?php render_flashes(); ?>
             <?php if (isset($errors['form'])): ?>
@@ -78,7 +78,6 @@ render_page_head('Login', 'Log in to your RailGo demo account.');
                 <button class="button button--full" type="submit">Login <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-switch">New to RailGo? <a href="signup.php">Create an Account</a></p>
-            <p class="demo-note">Local college demo only. Do not reuse a real password here.</p>
         </div>
     </section>
 </main>

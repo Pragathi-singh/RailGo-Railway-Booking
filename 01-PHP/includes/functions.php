@@ -157,12 +157,12 @@ function render_footer(): void
                 <h2>Support</h2>
                 <a href="forgot-password.php">Password help</a>
                 <a href="index.php#why-railgo">Why RailGo</a>
-                <a href="index.php#search">Search demo</a>
+                <a href="index.php#search">Search trains</a>
             </div>
         </div>
         <div class="site-footer__bottom">
-            <span>&copy; <?= date('Y') ?> RailGo. A college project demonstration.</span>
-            <span>Demo only &middot; No live railway bookings or payments.</span>
+            <span>&copy; <?= date('Y') ?> RailGo. Your Journey, Our Priority.</span>
+            <span>Thoughtful journeys begin with a simpler way to plan.</span>
         </div>
     </footer>
     </body>

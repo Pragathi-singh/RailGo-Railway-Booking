@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const submitButton = searchForm.querySelector('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
-                    submitButton.textContent = 'Checking demo…';
+                    submitButton.textContent = 'Searching…';
                 }
             }
         });

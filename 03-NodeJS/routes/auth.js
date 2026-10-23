@@ -107,7 +107,7 @@ router.post('/signup', redirectIfAuthenticated, signupLimiter, signupValidation,
             });
         }
 
-        req.session.flash = { type: 'success', message: 'Your demo account is ready. Please log in.' };
+        req.session.flash = { type: 'success', message: 'Your RailGo account is ready. Please sign in.' };
         return req.session.save((error) => {
             if (error) return next(error);
             return res.redirect('/login');

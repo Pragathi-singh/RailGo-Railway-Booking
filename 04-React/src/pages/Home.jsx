@@ -11,10 +11,10 @@ function Home() {
   const submit = (event) => {
     event.preventDefault();
     if (!search.from || !search.to || !search.date) {
-      setNotice('Choose your departure, destination and journey date to explore this demo.');
+      setNotice('Choose your departure, destination and journey date to search for trains.');
       return;
     }
-    setNotice(`Demo search ready: ${search.from} to ${search.to} on ${new Date(`${search.date}T00:00:00`).toLocaleDateString('en-IN', { dateStyle: 'long' })}. No live availability is being checked.`);
+    setNotice(`Live train results are not available for ${search.from} to ${search.to} on ${new Date(`${search.date}T00:00:00`).toLocaleDateString('en-IN', { dateStyle: 'long' })} right now. Please try another date or route.`);
   };
 
   return (
@@ -28,7 +28,7 @@ function Home() {
           <p className="hero-description">From bustling cities to quiet coastlines, discover the joy of travelling by rail.</p>
         </div>
         <div className="search-card container">
-          <div className="search-heading"><div><p className="eyebrow">PLAN YOUR JOURNEY</p><h2>Where will you go next?</h2></div><span className="demo-pill">Demo search · No live data</span></div>
+          <div className="search-heading"><div><p className="eyebrow">PLAN YOUR JOURNEY</p><h2>Where will you go next?</h2></div><span className="demo-pill">Search trains</span></div>
           <form onSubmit={submit} className="search-form">
             <div className="station-fields">
               <label className="input-wrap"><span>From</span><input name="from" value={search.from} onChange={update} placeholder="Departure station" /></label>
@@ -51,7 +51,7 @@ function Home() {
         </div>
       </section>
       <section className="quote-band"><div className="container quote-content"><p>“The world is a book and those who do not travel read only one page.”</p><span>— Saint Augustine</span><Link className="button button--light" to="/signup">Start your journey <span>→</span></Link></div></section>
-      <footer className="footer"><div className="container footer-content"><div><Link className="brand brand--light" to="/"><span className="brand-mark" aria-hidden="true">R</span><span>Rail<span>Go</span></span></Link><p>Your Journey, Our Priority</p></div><p className="footer-note">A front-end demo — no live train availability, bookings or payments.</p></div></footer>
+      <footer className="footer"><div className="container footer-content"><div><Link className="brand brand--light" to="/"><span className="brand-mark" aria-hidden="true">R</span><span>Rail<span>Go</span></span></Link><p>Your Journey, Our Priority</p></div><p className="footer-note">Thoughtful journeys begin with a simpler way to plan.</p></div></footer>
     </>
   );
 }

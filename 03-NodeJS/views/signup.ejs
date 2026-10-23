@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
-    <meta name="description" content="Create a RailGo demo account."><title><%= title %> | RailGo</title>
+    <meta name="description" content="Create your RailGo account."><title><%= title %> | RailGo</title>
     <link rel="stylesheet" href="<%= asset('css/style.css') %>"><script src="<%= asset('js/script.js') %>" defer></script>
 </head>
 <body>
@@ -31,11 +31,10 @@
                 <div class="field"><label for="confirm-password">Confirm password</label><div class="password-control"><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required><button class="password-toggle" type="button" data-password-toggle="confirm-password" aria-label="Show password" aria-pressed="false">Show</button></div>
                     <% if (errors.confirmPassword) { %><span class="field-error"><%= errors.confirmPassword %></span><% } %>
                 </div>
-                <div class="field field--terms"><label class="checkbox-label checkbox-label--terms"><input type="checkbox" name="terms" value="yes" <%= values.termsAccepted ? 'checked' : '' %> required> <span>I agree to the <a href="/home#demo-terms">demo terms and conditions</a>.</span></label>
+                <div class="field field--terms"><label class="checkbox-label checkbox-label--terms"><input type="checkbox" name="terms" value="yes" <%= values.termsAccepted ? 'checked' : '' %> required> <span>I agree to the <a href="/home#terms">terms and conditions</a>.</span></label>
                     <% if (errors.terms) { %><span class="field-error"><%= errors.terms %></span><% } %>
                 </div>
-                <p class="demo-note demo-note--left">Local demonstration only. Do not submit real personal information or a reused password.</p>
-                <button class="button button--full" type="submit">Create Account <span aria-hidden="true">&rarr;</span></button>
+                <button class="button button--full" type="submit">Create account <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-switch">Already have an account? <a href="/login">Login</a></p>
         </div>

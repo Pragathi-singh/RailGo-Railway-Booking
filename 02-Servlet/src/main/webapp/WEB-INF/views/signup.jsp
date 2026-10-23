@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
-    <meta name="description" content="Create a RailGo demo account."><title>Create account | RailGo</title>
+    <meta name="description" content="Create your RailGo account."><title>Create account | RailGo</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
     <script src="${pageContext.request.contextPath}/assets/js/script.js" defer></script>
 </head>
@@ -46,10 +46,9 @@
                 <div class="field"><label for="confirm-password">Confirm password</label><div class="password-control"><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required><button class="password-toggle" type="button" data-password-toggle="confirm-password" aria-label="Show password" aria-pressed="false">Show</button></div>
                     <% Object confirmErrorValue = request.getAttribute("confirmError"); if (confirmErrorValue instanceof String) { String error = (String) confirmErrorValue; %><span class="field-error"><%= Html.escape(error) %></span><% } %>
                 </div>
-                <div class="field field--terms"><label class="checkbox-label checkbox-label--terms"><input type="checkbox" name="terms" value="yes" required> <span>I agree to the <a href="${pageContext.request.contextPath}/home#demo-terms">demo terms and conditions</a>.</span></label>
+                <div class="field field--terms"><label class="checkbox-label checkbox-label--terms"><input type="checkbox" name="terms" value="yes" required> <span>I agree to the <a href="${pageContext.request.contextPath}/home#terms">terms and conditions</a>.</span></label>
                     <% Object termsErrorValue = request.getAttribute("termsError"); if (termsErrorValue instanceof String) { String error = (String) termsErrorValue; %><span class="field-error"><%= Html.escape(error) %></span><% } %>
                 </div>
-                <p class="demo-note demo-note--left">This is a local demonstration. Do not submit real personal information or a reused password.</p>
                 <button class="button button--full" type="submit">Create Account <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-switch">Already have an account? <a href="${pageContext.request.contextPath}/login">Login</a></p>

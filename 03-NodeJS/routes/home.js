@@ -12,7 +12,7 @@ const searchLimiter = rateLimit({
     limit: 20,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
-    message: 'Please wait a moment before submitting another demo search.'
+    message: 'Please wait a moment before submitting another search.'
 });
 
 router.get('/', (req, res) => res.redirect('/home'));
@@ -48,7 +48,7 @@ router.post('/search', searchLimiter, searchValidation, (req, res, next) => {
         title: 'Plan your journey',
         search: req.body,
         errors: {},
-        searchMessage: 'Demo search only: live train availability is not connected, so no train results are shown.'
+        searchMessage: `Live train results are not available for ${req.body.from} to ${req.body.to} on ${new Date(`${req.body.journeyDate}T00:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })} right now. Please try another date or route.`
     });
 });
 

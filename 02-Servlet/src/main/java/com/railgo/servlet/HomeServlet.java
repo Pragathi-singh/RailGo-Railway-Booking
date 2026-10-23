@@ -67,7 +67,9 @@ public class HomeServlet extends HttpServlet {
                 && request.getAttribute("dateError") == null
                 && request.getAttribute("classError") == null) {
             request.setAttribute("searchMessage",
-                    "Demo search only: live train availability is not connected, so no train results are shown.");
+                    "Live train results are not available for " + from + " to " + to + " on "
+                            + LocalDate.parse(date).format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+                            + ". Please try another date or route.");
         }
         showPage(request, response);
     }

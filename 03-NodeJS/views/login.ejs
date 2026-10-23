@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
-    <meta name="description" content="Log in to your RailGo demo account."><title><%= title %> | RailGo</title>
+    <meta name="description" content="Sign in to continue your RailGo journey."><title><%= title %> | RailGo</title>
     <link rel="stylesheet" href="<%= asset('css/style.css') %>"><script src="<%= asset('js/script.js') %>" defer></script>
 </head>
 <body>
 <main class="auth-layout" id="main-content">
-    <%- include('partials/auth-aside', { heading: 'Welcome Back!', description: 'Sign in to explore the account experience. Booking management and live PNR services are not connected in this local demo.', highlights: ['Manage your bookings', 'Check PNR status', 'Explore new destinations'], quote: 'The journey is the destination.' }) %>
+    <%- include('partials/auth-aside', { heading: 'Welcome back', description: 'Sign in to keep your travel plans together and continue your journey.', highlights: ['Keep your travel details together', 'Plan trips with ease', 'Explore new destinations'], quote: 'The journey is the destination.' }) %>
     <section class="auth-main">
         <div class="auth-form-wrap">
             <a class="mobile-brand" href="/home"><span class="brand__mark" aria-hidden="true">RG</span><span class="brand__words"><span class="brand__name">Rail<span>Go</span></span><span class="brand__tagline">Your Journey, Our Priority.</span></span></a>
             <a class="back-home" href="/home"><span aria-hidden="true">&larr;</span> Back to home</a>
-            <p class="eyebrow">GOOD TO SEE YOU AGAIN</p><h1 id="login-title">Login to RailGo</h1><p class="auth-intro">Enter your details to continue your journey.</p>
+            <p class="eyebrow">GOOD TO SEE YOU AGAIN</p><h1 id="login-title">Sign in to RailGo</h1><p class="auth-intro">Enter your details to continue your journey.</p>
             <% if (flash) { %><p class="notice notice--success" role="status"><%= flash.message %></p><% } %>
             <% if (errors.form) { %><p class="form-alert" role="alert"><%= errors.form %></p><% } %>
             <% if (errors.email) { %><p class="form-alert" role="alert"><%= errors.email %></p><% } %>
@@ -20,11 +20,9 @@
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" maxlength="254" value="<%= values.email || '' %>" required></div>
                 <div class="field"><label for="password">Password</label><div class="password-control"><input id="password" name="password" type="password" autocomplete="current-password" required><button class="password-toggle" type="button" data-password-toggle="password" aria-label="Show password" aria-pressed="false">Show</button></div></div>
-                <p class="demo-note demo-note--left">Local college demo only. Do not reuse a real password here.</p>
                 <button class="button button--full" type="submit">Login <span aria-hidden="true">&rarr;</span></button>
             </form>
             <p class="auth-switch">New to RailGo? <a href="/signup">Create an Account</a></p>
-            <p class="auth-switch auth-switch--small">Demo accounts are kept in memory and cleared when the server restarts.</p>
         </div>
     </section>
 </main>

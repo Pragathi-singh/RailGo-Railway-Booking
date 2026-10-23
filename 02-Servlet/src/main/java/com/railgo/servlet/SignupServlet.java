@@ -57,7 +57,7 @@ public class SignupServlet extends HttpServlet {
             request.setAttribute("confirmError", "Your passwords do not match.");
         }
         if (!"yes".equals(request.getParameter("terms"))) {
-            request.setAttribute("termsError", "Please accept the demo terms to create an account.");
+            request.setAttribute("termsError", "Please accept the terms and conditions to create an account.");
         }
 
         if (hasValidationErrors(request)) {
@@ -69,7 +69,7 @@ public class SignupServlet extends HttpServlet {
         try {
             registered = UserStore.register(name, email, mobile, password);
         } catch (IllegalStateException exception) {
-            getServletContext().log("RailGo demo account could not be created.", exception);
+            getServletContext().log("RailGo account could not be created.", exception);
             request.setAttribute("formError", "Account creation is temporarily unavailable. Please try again.");
             showPage(request, response);
             return;
@@ -80,7 +80,7 @@ public class SignupServlet extends HttpServlet {
             return;
         }
 
-        WebSupport.flash(request.getSession(), "success", "Your demo account is ready. Please log in.");
+        WebSupport.flash(request.getSession(), "success", "Your RailGo account is ready. Please sign in.");
         response.sendRedirect(request.getContextPath() + "/login");
     }
 

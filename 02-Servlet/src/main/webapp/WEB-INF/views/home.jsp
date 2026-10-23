@@ -41,7 +41,7 @@
         <div class="search-panel">
             <div class="search-panel__heading">
                 <div><p class="eyebrow">YOUR NEXT ADVENTURE</p><h2 id="search-title">Where would you like to go?</h2></div>
-                <span class="demo-tag">DEMO SEARCH</span>
+                <span class="demo-tag">SEARCH TRAINS</span>
             </div>
             <% Object searchMessageValue = request.getAttribute("searchMessage"); if (searchMessageValue instanceof String) { String searchMessage = (String) searchMessageValue; %>
                 <p class="notice notice--info" role="status"><%= Html.escape(searchMessage) %></p>
@@ -79,7 +79,7 @@
                     <button class="button search-submit" type="submit">Search Trains <span aria-hidden="true">&rarr;</span></button>
                 </div>
             </form>
-            <p class="demo-disclaimer">This college project does not connect to live schedules or ticket inventory.</p>
+            <p class="demo-disclaimer">Choose your route and travel class to find the right journey.</p>
         </div>
     </section>
 
@@ -87,9 +87,9 @@
         <div class="section-heading"><p class="eyebrow">THE RAILGO DIFFERENCE</p><h2 id="benefits-title">A little more ease in every journey</h2></div>
         <div class="benefit-grid">
             <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#10003;</span><h3>Easy Booking</h3><p>A clear, simple experience from planning to your next stop.</p></article>
-            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9678;</span><h3>Live Train Status</h3><p>A planned RailGo benefit; live schedule connections are not part of this demo.</p></article>
-            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9830;</span><h3>Multiple Payment Options</h3><p>Payment methods are not connected; this demonstration does not process payments.</p></article>
-            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9742;</span><h3>24/7 Support</h3><p>Support services are not connected in this local college demonstration.</p></article>
+            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9678;</span><h3>Journey clarity</h3><p>Keep your route, date and travel class clear from the very beginning.</p></article>
+            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9830;</span><h3>Thoughtful planning</h3><p>Make confident choices with a calm, focused booking experience.</p></article>
+            <article class="benefit"><span class="benefit__icon" aria-hidden="true">&#9742;</span><h3>Helpful guidance</h3><p>Find helpful guidance whenever you need a smoother journey.</p></article>
         </div>
     </section>
 
@@ -101,8 +101,7 @@
                 <h2 id="why-title">Your journey deserves a thoughtful start.</h2>
                 <p>RailGo brings the essentials of planning together in one welcoming place. Get ready to discover new cities, reconnect with familiar places, and make the most of the miles in between.</p>
                 <a class="text-link" href="${pageContext.request.contextPath}/signup">Get started with RailGo <span aria-hidden="true">&rarr;</span></a>
-                <p class="small-print">This is an authentication and interface demonstration, not a live booking service.</p>
-                <p class="small-print" id="demo-terms">Demo terms: use sample information only. Accounts are held in memory and reset when the server restarts; no live bookings, schedules, or payments are provided.</p>
+                <p class="small-print" id="terms">Please use information you are comfortable storing in this local installation.</p>
             </div>
         </div>
     </section>

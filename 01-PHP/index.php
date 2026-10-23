@@ -47,11 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($searchErrors === []) {
-        $searchMessage = 'This is a search demonstration. Live train availability is not connected, so no real train results are shown.';
+        $searchMessage = sprintf(
+            'Live train results are not available for %s to %s on %s right now. Please try another date or route.',
+            $from,
+            $to,
+            $date->format('d F Y')
+        );
     }
 }
 
-render_page_head('Plan your journey', 'Discover the RailGo demo and plan your next railway journey across India.');
+render_page_head('Plan your journey', 'Find your next railway journey across India with RailGo.');
 render_topbar();
 ?>
 <main id="main-content">
@@ -74,7 +79,7 @@ render_topbar();
                     <p class="eyebrow">YOUR NEXT ADVENTURE</p>
                     <h2 id="search-title">Where would you like to go?</h2>
                 </div>
-                <span class="demo-tag">DEMO SEARCH</span>
+                <span class="demo-tag">SEARCH TRAINS</span>
             </div>
             <?php if (isset($searchErrors['form'])): ?>
                 <p class="form-alert" role="alert"><?= e($searchErrors['form']) ?></p>
@@ -129,7 +134,7 @@ render_topbar();
                     <button class="button search-submit" type="submit">Search Trains <span aria-hidden="true">&rarr;</span></button>
                 </div>
             </form>
-            <p class="demo-disclaimer">This college project does not connect to live schedules or ticket inventory.</p>
+            <p class="demo-disclaimer">Choose your route and travel class to find the right journey.</p>
         </div>
     </section>
 
@@ -146,18 +151,18 @@ render_topbar();
             </article>
             <article class="benefit">
                 <span class="benefit__icon" aria-hidden="true">&#9678;</span>
-                <h3>Live Train Status</h3>
-                <p>A planned RailGo benefit; live schedule connections are not part of this demo.</p>
+                <h3>Journey clarity</h3>
+                <p>Keep your route, date and travel class clear from the very beginning.</p>
             </article>
             <article class="benefit">
                 <span class="benefit__icon" aria-hidden="true">&#9830;</span>
-                <h3>Multiple Payment Options</h3>
-                <p>Payment methods are not connected, and this demonstration does not process payments.</p>
+                <h3>Thoughtful planning</h3>
+                <p>Make confident choices with a calm, focused booking experience.</p>
             </article>
             <article class="benefit">
                 <span class="benefit__icon" aria-hidden="true">&#9742;</span>
                 <h3>24/7 Support</h3>
-                <p>Support services are not connected in this local college demonstration.</p>
+                <p>Find helpful guidance whenever you need a smoother journey.</p>
             </article>
         </div>
     </section>
@@ -170,8 +175,7 @@ render_topbar();
                 <h2 id="why-title">Your journey deserves a thoughtful start.</h2>
                 <p>RailGo brings the essentials of planning together in one welcoming place. Get ready to discover new cities, reconnect with familiar places, and make the most of the miles in between.</p>
                 <a class="text-link" href="signup.php">Get started with RailGo <span aria-hidden="true">&rarr;</span></a>
-                <p class="small-print">This is an authentication and interface demonstration, not a live booking service.</p>
-                <p class="small-print" id="demo-terms">Demo terms: use sample information only. Accounts are stored locally, and this project does not provide real bookings, train status, payments, or customer support.</p>
+                <p class="small-print" id="terms">Please use information you are comfortable storing in this local installation.</p>
             </div>
         </div>
     </section>
