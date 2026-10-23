@@ -1,0 +1,4 @@
+<header class="site-header"><nav class="navbar container" aria-label="Main navigation">
+  <a class="brand" href="#/"><span class="brand-mark">R</span><span>Rail<span>Go</span></span></a>
+  <div class="nav-links"><a href="#/">Home</a><a href="#/search">Trains</a><a ng-if="currentUser" href="#/dashboard">My account</a><a ng-if="currentUser" href="#/history">Bookings</a><a ng-if="!currentUser" href="#/login">Sign in</a><a ng-if="!currentUser" class="button button--small" href="#/signup">Create account</a><button ng-if="currentUser" class="nav-logout" ng-click="logout()">Log out</button></div>
+</nav></header>
