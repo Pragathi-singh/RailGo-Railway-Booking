@@ -1,0 +1,18 @@
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  mobile VARCHAR(30) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL
+);
+CREATE TABLE bookings (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  origin VARCHAR(120) NOT NULL,
+  destination VARCHAR(120) NOT NULL,
+  journey_date DATE NOT NULL,
+  travel_class VARCHAR(60) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  CONSTRAINT fk_booking_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
