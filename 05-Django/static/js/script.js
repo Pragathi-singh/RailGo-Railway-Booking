@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const visible = input.type === "text";
       input.type = visible ? "password" : "text";
       button.textContent = visible ? "Show" : "Hide";
-      button.setAttribute("aria-label", visible ? "Show password" : "Hide password");
+      button.setAttribute(
+        "aria-label",
+        visible ? "Show password" : "Hide password",
+      );
     });
   });
 });

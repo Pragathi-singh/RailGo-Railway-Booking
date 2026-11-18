@@ -6,6 +6,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP NOT NULL
 );
+
 CREATE TABLE bookings (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   user_id BIGINT NOT NULL,
@@ -14,5 +15,5 @@ CREATE TABLE bookings (
   journey_date DATE NOT NULL,
   travel_class VARCHAR(60) NOT NULL,
   created_at TIMESTAMP NOT NULL,
-  CONSTRAINT fk_booking_user FOREIGN KEY (user_id) REFERENCES users(id)
+  CONSTRAINT fk_booking_user FOREIGN KEY (user_id) REFERENCES users (id)
 );

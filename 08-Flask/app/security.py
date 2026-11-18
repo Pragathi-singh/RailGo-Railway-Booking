@@ -23,9 +23,11 @@ def login_required(view):
         if "user_id" not in session:
             return redirect(url_for("main.login", next=request_path()))
         return view(*args, **kwargs)
+
     return wrapped
 
 
 def request_path():
     from flask import request
+
     return request.full_path

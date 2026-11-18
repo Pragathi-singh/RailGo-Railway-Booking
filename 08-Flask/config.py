@@ -1,9 +1,16 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "local-development-key-change-me")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///railgo.db")
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "mysql+pymysql://railgo_phase2@127.0.0.1:3306/railgo_flask"
+        "?charset=utf8mb4",
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"

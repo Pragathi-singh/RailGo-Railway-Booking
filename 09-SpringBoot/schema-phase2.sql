@@ -1,0 +1,43 @@
+CREATE DATABASE IF NOT EXISTS railgo_springboot CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE railgo_springboot;
+CREATE TABLE IF NOT EXISTS users (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(120) NOT NULL,
+ email VARCHAR(255) NOT NULL UNIQUE, mobile VARCHAR(30) NOT NULL,
+ password_hash VARCHAR(255) NOT NULL, created_at TIMESTAMP NOT NULL
+);
+CREATE TABLE IF NOT EXISTS trains (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, train_number VARCHAR(20) NOT NULL UNIQUE,
+ train_name VARCHAR(120) NOT NULL, source VARCHAR(120) NOT NULL,
+ destination VARCHAR(120) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS train_schedules (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, train_id BIGINT NOT NULL,
+ journey_date DATE NOT NULL, departure_time TIME NOT NULL,
+ arrival_time TIME NOT NULL, duration VARCHAR(30) NOT NULL,
+ travel_class VARCHAR(30) NOT NULL, total_seats INT NOT NULL,
+ available_seats INT NOT NULL, fare DECIMAL(10,2) NOT NULL,
+ UNIQUE KEY uq_spring_schedule(train_id,journey_date,travel_class),
+ FOREIGN KEY (train_id) REFERENCES trains(id)
+);
+CREATE TABLE IF NOT EXISTS bookings (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, user_id BIGINT NOT NULL,
+ schedule_id BIGINT NULL, pnr VARCHAR(20) NOT NULL UNIQUE,
+ booking_status VARCHAR(30) NOT NULL DEFAULT 'CONFIRMED',
+ total_amount DECIMAL(10,2) NOT NULL, origin VARCHAR(120) NOT NULL,
+ destination VARCHAR(120) NOT NULL, journey_date DATE NOT NULL,
+ travel_class VARCHAR(60) NOT NULL, created_at TIMESTAMP NOT NULL,
+ FOREIGN KEY (user_id) REFERENCES users(id)
+);
+CREATE TABLE IF NOT EXISTS passengers (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, booking_id BIGINT NOT NULL,
+ passenger_name VARCHAR(120) NOT NULL, age INT NOT NULL,
+ gender VARCHAR(20) NOT NULL,
+ FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS payments (
+ id BIGINT AUTO_INCREMENT PRIMARY KEY, booking_id BIGINT NOT NULL UNIQUE,
+ amount DECIMAL(10,2) NOT NULL, payment_method VARCHAR(30) NOT NULL,
+ payment_status VARCHAR(30) NOT NULL, transaction_reference VARCHAR(40) NOT NULL UNIQUE,
+ created_at TIMESTAMP NOT NULL,
+ FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE
+);

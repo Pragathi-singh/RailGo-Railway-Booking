@@ -1,7 +1,6 @@
 import re
 from datetime import date
 
-
 EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MOBILE = re.compile(r"^[0-9+() -]{7,20}$")
 

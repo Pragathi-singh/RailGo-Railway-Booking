@@ -1,0 +1,24 @@
+<%- include('partials/header', { title })%>
+<main class="page container">
+    <p class="eyebrow">BOOKINGS</p>
+    <h1>My bookings</h1>
+    <%if (!bookings.length) {%>
+    <p>No bookings yet.</p>
+    <%}%><%bookings.forEach((booking) => {%>
+    <article class="profile-card">
+        <h2>PNR <%= booking.pnr%></h2>
+        <p>
+            <%= booking.origin%> → <%= booking.destination%> · <%= booking.journey_date%> · <%= booking.travel_class%>
+        </p>
+        <p><%= booking.booking_status%> · ₹<%= booking.total_fare%></p>
+        <a class="button secondary" href="/booking/<%= booking.id%>">View details</a><%if (booking.booking_status === 'CONFIRMED') {%>
+        <form method="post" action="/booking/<%= booking.id%>/cancel">
+            <input type="hidden" name="_csrf" value="<%= csrfToken%>" /><button class="button secondary">
+                Cancel booking
+            </button>
+        </form>
+        <%}%>
+    </article>
+    <%});%>
+</main>
+<%- include('partials/footer')%>

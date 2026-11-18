@@ -1,32 +1,60 @@
 package com.railgo.util;
 
+import com.railgo.dao.UserDao;
 import com.railgo.model.User;
-
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class UserStore {
-    private static final ConcurrentHashMap<String, User> USERS = new ConcurrentHashMap<>();
 
-    private UserStore() {
-    }
+  private static final UserDao DAO = new UserDao();
 
-    public static boolean register(String fullName, String email, String mobile, String password) {
-        String normalizedEmail = normalizeEmail(email);
-        User user = new User(fullName, normalizedEmail, mobile, PasswordHasher.hash(password));
-        return USERS.putIfAbsent(normalizedEmail, user) == null;
-    }
+  private UserStore() {}
 
-    public static Optional<User> authenticate(String email, String password) {
-        User user = USERS.get(normalizeEmail(email));
-        if (user == null || !PasswordHasher.verify(password, user.passwordHash())) {
-            return Optional.empty();
-        }
-        return Optional.of(user);
+  public static boolean register(
+    String fullName,
+    String email,
+    String mobile,
+    String password
+  ) {
+    String normalizedEmail = normalizeEmail(email);
+    User user = new User(
+      0,
+      fullName,
+      normalizedEmail,
+      mobile,
+      PasswordHasher.hash(password)
+    );
+    try {
+      return DAO.create(user);
+    } catch (SQLException exception) {
+      throw new IllegalStateException(
+        "Database account operation failed.",
+        exception
+      );
     }
+  }
 
-    public static String normalizeEmail(String email) {
-        return email.trim().toLowerCase(Locale.ROOT);
+  public static Optional<User> authenticate(String email, String password) {
+    try {
+      Optional<User> user = DAO.findByEmail(normalizeEmail(email));
+      if (
+        user.isEmpty() ||
+        !PasswordHasher.verify(password, user.get().passwordHash())
+      ) {
+        return Optional.empty();
+      }
+      return user;
+    } catch (SQLException exception) {
+      throw new IllegalStateException(
+        "Database login operation failed.",
+        exception
+      );
     }
+  }
+
+  public static String normalizeEmail(String email) {
+    return email.trim().toLowerCase(Locale.ROOT);
+  }
 }

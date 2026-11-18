@@ -1,62 +1,81 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . "/includes/bootstrap.php";
 
 $searchErrors = [];
-$searchMessage = '';
-$from = '';
-$to = '';
-$journeyDate = '';
-$travelClass = 'Sleeper';
+$searchMessage = "";
+$from = "";
+$to = "";
+$journeyDate = "";
+$travelClass = "Sleeper";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $from = trim(post_string('from_station'));
-    $to = trim(post_string('to_station'));
-    $journeyDate = trim(post_string('journey_date'));
-    $travelClass = trim(post_string('travel_class'));
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $from = trim(post_string("from_station"));
+    $to = trim(post_string("to_station"));
+    $journeyDate = trim(post_string("journey_date"));
+    $travelClass = trim(post_string("travel_class"));
 
-    if (!valid_csrf(post_string('csrf_token'))) {
-        $searchErrors['form'] = 'Your session could not be verified. Please refresh the page and try again.';
+    if (!valid_csrf(post_string("csrf_token"))) {
+        $searchErrors["form"] =
+            "Your session could not be verified. Please refresh the page and try again.";
     }
-    if ($from === '') {
-        $searchErrors['from_station'] = 'Enter your departure station.';
+    if ($from === "") {
+        $searchErrors["from_station"] = "Enter your departure station.";
     }
-    if ($to === '') {
-        $searchErrors['to_station'] = 'Enter your destination station.';
+    if ($to === "") {
+        $searchErrors["to_station"] = "Enter your destination station.";
     }
-    if ($from !== '' && $to !== '' && strtolower($from) === strtolower($to)) {
-        $searchErrors['to_station'] = 'Choose a destination different from your departure station.';
+    if ($from !== "" && $to !== "" && strtolower($from) === strtolower($to)) {
+        $searchErrors["to_station"] =
+            "Choose a destination different from your departure station.";
     }
     if (strlen($from) > 200) {
-        $searchErrors['from_station'] = 'Departure station must be 200 characters or fewer.';
+        $searchErrors["from_station"] =
+            "Departure station must be 200 characters or fewer.";
     }
     if (strlen($to) > 200) {
-        $searchErrors['to_station'] = 'Destination station must be 200 characters or fewer.';
+        $searchErrors["to_station"] =
+            "Destination station must be 200 characters or fewer.";
     }
-    $date = DateTimeImmutable::createFromFormat('!Y-m-d', $journeyDate);
-    if ($journeyDate === '' || $date === false || $date->format('Y-m-d') !== $journeyDate) {
-        $searchErrors['journey_date'] = 'Choose a valid journey date.';
-    } elseif ($date < new DateTimeImmutable('today')) {
-        $searchErrors['journey_date'] = 'Journey date cannot be in the past.';
+    $date = DateTimeImmutable::createFromFormat("!Y-m-d", $journeyDate);
+    if (
+        $journeyDate === "" ||
+        $date === false ||
+        $date->format("Y-m-d") !== $journeyDate
+    ) {
+        $searchErrors["journey_date"] = "Choose a valid journey date.";
+    } elseif ($date < new DateTimeImmutable("today")) {
+        $searchErrors["journey_date"] = "Journey date cannot be in the past.";
     }
-    $classes = ['Sleeper', 'AC 3 Tier', 'AC 2 Tier', 'AC First Class', 'Chair Car'];
+    $classes = [
+        "Sleeper",
+        "AC 3 Tier",
+        "AC 2 Tier",
+        "AC First Class",
+        "Chair Car",
+    ];
     if (!in_array($travelClass, $classes, true)) {
-        $searchErrors['travel_class'] = 'Choose a valid travel class.';
-        $travelClass = 'Sleeper';
+        $searchErrors["travel_class"] = "Choose a valid travel class.";
+        $travelClass = "Sleeper";
     }
 
     if ($searchErrors === []) {
-        $searchMessage = sprintf(
-            'Live train results are not available for %s to %s on %s right now. Please try another date or route.',
-            $from,
-            $to,
-            $date->format('d F Y')
-        );
+        $_SESSION["journey_search"] = [
+            "from" => $from,
+            "to" => $to,
+            "date" => $journeyDate,
+            "class" => $travelClass,
+        ];
+        unset($_SESSION["demo_booking"]);
+        redirect("search.php");
     }
 }
 
-render_page_head('Plan your journey', 'Find your next railway journey across India with RailGo.');
+render_page_head(
+    "Plan your journey",
+    "Find your next railway journey across India with RailGo.",
+);
 render_topbar();
 ?>
 <main id="main-content">
@@ -81,20 +100,32 @@ render_topbar();
                 </div>
                 <span class="demo-tag">SEARCH TRAINS</span>
             </div>
-            <?php if (isset($searchErrors['form'])): ?>
-                <p class="form-alert" role="alert"><?= e($searchErrors['form']) ?></p>
+            <?php if (isset($searchErrors["form"])): ?>
+                <p class="form-alert" role="alert"><?= e(
+                    $searchErrors["form"],
+                ) ?></p>
             <?php endif; ?>
-            <?php if ($searchMessage !== ''): ?>
-                <p class="notice notice--info" role="status"><?= e($searchMessage) ?></p>
+            <?php if ($searchMessage !== ""): ?>
+                <p class="notice notice--info" role="status"><?= e(
+                    $searchMessage,
+                ) ?></p>
             <?php endif; ?>
             <form action="index.php#search" method="post" class="search-form" novalidate>
                 <?= csrf_input() ?>
                 <div class="station-fields">
                     <div class="field">
                         <label for="from-station">From station</label>
-                        <input id="from-station" name="from_station" type="text" autocomplete="off" placeholder="e.g. Mumbai Central" value="<?= e($from) ?>" required aria-describedby="<?= isset($searchErrors['from_station']) ? 'from-error' : 'from-hint' ?>">
-                        <?php if (isset($searchErrors['from_station'])): ?>
-                            <span class="field-error" id="from-error"><?= e($searchErrors['from_station']) ?></span>
+                        <input id="from-station" name="from_station" type="text" autocomplete="off" placeholder="e.g. Mumbai Central" value="<?= e(
+                            $from,
+                        ) ?>" required aria-describedby="<?= isset(
+    $searchErrors["from_station"],
+)
+    ? "from-error"
+    : "from-hint" ?>">
+                        <?php if (isset($searchErrors["from_station"])): ?>
+                            <span class="field-error" id="from-error"><?= e(
+                                $searchErrors["from_station"],
+                            ) ?></span>
                         <?php else: ?>
                             <span class="field-hint" id="from-hint">Your departure city or station</span>
                         <?php endif; ?>
@@ -104,9 +135,17 @@ render_topbar();
                     </button>
                     <div class="field">
                         <label for="to-station">To station</label>
-                        <input id="to-station" name="to_station" type="text" autocomplete="off" placeholder="e.g. New Delhi" value="<?= e($to) ?>" required aria-describedby="<?= isset($searchErrors['to_station']) ? 'to-error' : 'to-hint' ?>">
-                        <?php if (isset($searchErrors['to_station'])): ?>
-                            <span class="field-error" id="to-error"><?= e($searchErrors['to_station']) ?></span>
+                        <input id="to-station" name="to_station" type="text" autocomplete="off" placeholder="e.g. New Delhi" value="<?= e(
+                            $to,
+                        ) ?>" required aria-describedby="<?= isset(
+    $searchErrors["to_station"],
+)
+    ? "to-error"
+    : "to-hint" ?>">
+                        <?php if (isset($searchErrors["to_station"])): ?>
+                            <span class="field-error" id="to-error"><?= e(
+                                $searchErrors["to_station"],
+                            ) ?></span>
                         <?php else: ?>
                             <span class="field-hint" id="to-hint">Where would you like to arrive?</span>
                         <?php endif; ?>
@@ -115,20 +154,39 @@ render_topbar();
                 <div class="search-form__details">
                     <div class="field">
                         <label for="journey-date">Journey date</label>
-                        <input id="journey-date" name="journey_date" type="date" min="<?= e(date('Y-m-d')) ?>" value="<?= e($journeyDate) ?>" required>
-                        <?php if (isset($searchErrors['journey_date'])): ?>
-                            <span class="field-error"><?= e($searchErrors['journey_date']) ?></span>
+                        <input id="journey-date" name="journey_date" type="date" min="<?= e(
+                            date("Y-m-d"),
+                        ) ?>" value="<?= e($journeyDate) ?>" required>
+                        <?php if (isset($searchErrors["journey_date"])): ?>
+                            <span class="field-error"><?= e(
+                                $searchErrors["journey_date"],
+                            ) ?></span>
                         <?php endif; ?>
                     </div>
                     <div class="field">
                         <label for="travel-class">Travel class</label>
                         <select id="travel-class" name="travel_class">
-                            <?php foreach (['Sleeper', 'AC 3 Tier', 'AC 2 Tier', 'AC First Class', 'Chair Car'] as $class): ?>
-                                <option value="<?= e($class) ?>" <?= $travelClass === $class ? 'selected' : '' ?>><?= e($class) ?></option>
+                            <?php foreach (
+                                [
+                                    "Sleeper",
+                                    "AC 3 Tier",
+                                    "AC 2 Tier",
+                                    "AC First Class",
+                                    "Chair Car",
+                                ]
+                                as $class
+                            ): ?>
+                                <option value="<?= e(
+                                    $class,
+                                ) ?>" <?= $travelClass === $class
+    ? "selected"
+    : "" ?>><?= e($class) ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <?php if (isset($searchErrors['travel_class'])): ?>
-                            <span class="field-error"><?= e($searchErrors['travel_class']) ?></span>
+                        <?php if (isset($searchErrors["travel_class"])): ?>
+                            <span class="field-error"><?= e(
+                                $searchErrors["travel_class"],
+                            ) ?></span>
                         <?php endif; ?>
                     </div>
                     <button class="button search-submit" type="submit">Search Trains <span aria-hidden="true">&rarr;</span></button>

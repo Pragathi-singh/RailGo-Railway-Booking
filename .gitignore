@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Generated builds and caches
+dist/
+build/
+target/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+
+# IDE and editor state
+.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# Local secrets and environment files
+.env
+.env.*
+!*.env.example
+
+# Local databases and dumps
+*.db
+*.sqlite
+*.sqlite3
+*.sqlitedb
+*.sql.gz
+
+# Logs and temporary files
+*.log
+*.bak
+*.old
+*.tmp
+*.swp
+*.swo
+npm-debug.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db

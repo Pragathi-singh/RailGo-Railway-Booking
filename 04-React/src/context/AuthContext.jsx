@@ -1,58 +1,61 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import bcrypt from 'bcryptjs';
-
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 const AuthContext = createContext(null);
-const USERS_KEY = 'railgo_demo_users';
-const SESSION_KEY = 'railgo_demo_session';
-
-const readJson = (key, fallback) => {
-  try {
-    const value = window.localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  } catch {
-    return fallback;
-  }
-};
+const API = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:3011";
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => readJson(SESSION_KEY, null));
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (user) window.localStorage.setItem(SESSION_KEY, JSON.stringify(user));
-    else window.localStorage.removeItem(SESSION_KEY);
-  }, [user]);
+    fetch(`${API}/api/auth/me`, { credentials: "include" })
+      .then((response) => response.json())
+      .then((data) => setUser(data.user || null))
+      .catch(() => setUser(null));
+  }, []);
 
   const signup = async ({ fullName, email, mobile, password }) => {
-    const normalizedEmail = email.trim().toLowerCase();
-    const users = readJson(USERS_KEY, []);
-    if (users.some((account) => account.email === normalizedEmail)) {
-      return { ok: false, field: 'email', message: 'An account with this email already exists. Try logging in instead.' };
-    }
-
-    const account = {
-      id: crypto.randomUUID(),
-      fullName: fullName.trim(),
-      email: normalizedEmail,
-      mobile: mobile.replace(/[\s()-]/g, ''),
-      passwordHash: await bcrypt.hash(password, 10),
-    };
-    window.localStorage.setItem(USERS_KEY, JSON.stringify([...users, account]));
-    return { ok: true };
+    const response = await fetch(`${API}/api/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ fullName, email, mobile, password }),
+    });
+    const data = await response.json();
+    return data.ok ? { ok: true } : data;
   };
 
   const login = async (email, password) => {
-    const normalizedEmail = email.trim().toLowerCase();
-    const account = readJson(USERS_KEY, []).find((item) => item.email === normalizedEmail);
-    if (!account || !(await bcrypt.compare(password, account.passwordHash))) {
-      return { ok: false, message: 'We could not match that email and password. Check your details and try again.' };
-    }
-    const session = { id: account.id, fullName: account.fullName, email: account.email, mobile: account.mobile };
-    setUser(session);
-    return { ok: true };
+    const response = await fetch(`${API}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+    if (data.ok) setUser(data.user);
+    return data.ok ? { ok: true } : data;
   };
 
-  const logout = () => setUser(null);
-  const value = useMemo(() => ({ user, signup, login, logout }), [user]);
+  const logout = () => {
+    fetch(`${API}/api/auth/logout`, { method: "POST", credentials: "include" }).finally(() =>
+      setUser(null),
+    );
+  };
+  const updateProfile = async ({ fullName, email, mobile }) => {
+    if (!user) return { ok: false };
+    const response = await fetch(`${API}/api/profile`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ fullName, email, mobile }),
+    });
+    const data = await response.json();
+    if (data.ok) setUser(data.user);
+    return data.ok ? { ok: true } : data;
+  };
+  const value = useMemo(
+    () => ({ user, signup, login, logout, updateProfile }),
+    [user],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -1,0 +1,26 @@
+{%extends "base.html"%}{%block title%}Booking confirmed | RailGo{%endblock%}{%block content%}
+<main class="page container">
+    <p class="eyebrow">BOOKING CONFIRMED</p>
+    <h1>Your RailGo ticket</h1>
+    <article class="profile-card">
+        <h2>PNR {{booking.pnr}}</h2>
+        <p>
+            {{booking.origin}} → {{booking.destination}} · {{booking.journey_date}} · {{booking.travel_class}}
+        </p>
+        <p>
+            {{booking.passenger_count}} passenger(s) · Total fare ₹{{booking.total_fare}} · {{booking.booking_status}}
+        </p>
+        <ul>
+            {%for passenger in booking.passengers%}
+            <li>
+                {{passenger.passenger_name}}, {{passenger.age}} · {{passenger.gender}} · Seat {{passenger.seat_number}}
+            </li>
+            {%endfor%}
+        </ul>
+        <p>
+            Payment status: DEMO_CONFIRMED ({{booking.payment.transaction_reference}})
+        </p>
+        <a class="button" href="{{url_for('main.history')}}">View my bookings</a>
+    </article>
+</main>
+{%endblock%}

@@ -1,1 +1,29 @@
-<%@ page contentType="text/html;charset=UTF-8" %><%@ taglib prefix="c" uri="jakarta.tags.core" %><!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Password help | RailGo</title><link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css"></head><body><main class="auth-page"><section class="auth-panel single"><div class="auth-form-wrap"><a class="back" href="${pageContext.request.contextPath}/home">← Back to home</a><p class="eyebrow">ACCOUNT SUPPORT</p><h1>Password help</h1><p class="muted">Enter your email and we will show the available recovery guidance.</p><form method="post" class="auth-form"><label class="field">Email address<input type="email" name="email" required></label><button class="button full" type="submit">Continue →</button></form><c:if test="${not empty message}"><p class="alert">${message}</p></c:if><p class="auth-switch"><a href="${pageContext.request.contextPath}/login">Return to sign in</a></p></div></section></main></body></html>
+<%@ page contentType="text/html;charset=UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Password help | RailGo</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <main class="auth-page">
+        <section class="auth-panel single">
+            <div class="auth-form-wrap"><a class="back" href="/home">← Back to home</a>
+                <p class="eyebrow">ACCOUNT SUPPORT</p>
+                <h1>Password help</h1>
+                <p class="muted">Enter your email and we will show the available recovery guidance.</p>
+                <form method="post" class="auth-form"><label class="field">Email address<input type="email" name="email" required></label><button class="button full" type="submit">Continue →</button></form>
+                <c:if test="">
+                    <p class="alert"></p>
+                </c:if>
+                <p class="auth-switch"><a href="/login">Return to sign in</a></p>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

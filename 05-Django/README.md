@@ -1,28 +1,26 @@
-# RailGo Django demo
+# RailGo Django Edition
 
-RailGo is a standalone Django 5.2 railway booking **demo**. It uses SQLite and Django's built-in authentication/password hashing. It does not connect to Indian Railways, retrieve live availability, make bookings, process payments, or use real personal data.
+## Stack
 
-## Windows / VS Code setup
+Python 3.10+, Django 5.2, Django ORM, MySQL 8, and pytest-compatible Django tests.
 
-From the repository root, open a terminal and run:
+## Setup
 
 ```powershell
 cd 05-Django
-py -3.11 -m venv .venv
+py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+Copy-Item .env.example .env
 python manage.py migrate
-python manage.py runserver
+python manage.py runserver 127.0.0.1:8005
 ```
 
-Open http://127.0.0.1:8000/. If PowerShell blocks activation, run the commands with `.venv\Scripts\python.exe` instead.
+Configure `.env` for the dedicated `railgo_django` database. The `.env` file
+must be excluded from Git.
 
-To create an optional admin account:
+Default local URL: `http://127.0.0.1:8005`.
 
 ```powershell
-python manage.py createsuperuser
+python manage.py test
 ```
-
-## Authentication and demo limitations
-
-Email is used as the login identifier by looking up the Django user model's normalized email address, then `authenticate()` verifies the password using Django's password hashers. User records and sessions are stored in local SQLite. This is suitable for learning and local demos only; use HTTPS, environment-managed secrets, a production database, rate limiting and a proper deployment configuration for a real service.

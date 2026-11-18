@@ -1,1 +1,26 @@
-<!doctype html><html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::main})}"><main class="page container"><p class="eyebrow">SEARCH RESULTS</p><h1>Find your next journey.</h1><div class="empty-state"><div class="empty-icon">✦</div><h2>No live train results are available right now.</h2><p>We could not retrieve live inventory for <strong th:text="${journey.origin}"></strong> to <strong th:text="${journey.destination}"></strong> on <strong th:text="${journey.journeyDate}"></strong>.</p><a class="button secondary" th:href="@{/}">Search another route</a></div></main></html>
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base :: layout(~{::main})}"
+>
+  <main class="page container">
+    <p class="eyebrow">SEARCH RESULTS</p>
+    <h1>Your demo journey</h1>
+    <div class="empty-state" th:if="${journey != null}">
+      <h2>
+        <span th:text="${journey.origin}"></span> →
+        <span th:text="${journey.destination}"></span>
+      </h2>
+      <p th:text="${journey.journeyDate + ' · ' + journey.travelClass}"></p>
+      <p>
+        Live inventory is not connected, but you can complete the session-only
+        demo workflow.
+      </p>
+      <a class="button" th:href="@{/book}">Enter passenger details →</a>
+    </div>
+    <div class="empty-state" th:unless="${journey != null}">
+      <h2>Search for a route first</h2>
+      <a class="button" th:href="@{/}">Plan a journey</a>
+    </div>
+  </main>
+</html>

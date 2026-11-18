@@ -1,0 +1,41 @@
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base :: layout(~{::main})}"
+>
+  <main class="page container">
+    <p class="eyebrow">DEMO BOOKING</p>
+    <h1>Passenger details</h1>
+    <p
+      th:if="${journey != null}"
+      th:text="${journey.origin + ' → ' + journey.destination + ' · ' + journey.journeyDate}"
+    ></p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <form th:action="@{/book}" method="post" class="profile-form">
+      <div class="field">
+        <label for="passengerName">Passenger name</label
+        ><input id="passengerName" name="passengerName" required />
+      </div>
+      <div class="field">
+        <label for="passengerAge">Age</label
+        ><input
+          id="passengerAge"
+          name="passengerAge"
+          type="number"
+          min="1"
+          max="120"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="passengerGender">Gender</label
+        ><select id="passengerGender" name="passengerGender">
+          <option>Female</option>
+          <option>Male</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <button class="button" type="submit">Confirm demo booking →</button>
+    </form>
+  </main>
+</html>

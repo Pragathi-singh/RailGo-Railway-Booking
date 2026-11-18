@@ -1,21 +1,34 @@
-# RailGo React demo
+# RailGo React Edition
 
-This is a standalone React + Vite implementation of the RailGo railway booking experience. It is a front-end demo only: it does not connect to live train data, book tickets, process payments, or call a backend.
+## Stack
 
-## Run locally
+React, Vite, JavaScript, and a Node REST API backend.
 
-```bash
+## Prerequisites
+
+- Node.js 20+
+- npm
+- A running Node edition at the configured API URL
+
+## Setup
+
+```powershell
+cd 04-React
 npm install
+Copy-Item .env.example .env.local
 npm run dev
 ```
 
-For a production build:
+`VITE_API_BASE_URL` must point to the Node API, for example
+`http://127.0.0.1:3011`.
 
-```bash
+Default development port: `http://localhost:5173`.
+
+```powershell
 npm run build
 npm run preview
 ```
 
-## Demo authentication
-
-Accounts are stored in the browser's `localStorage`, and passwords are hashed with `bcryptjs` before storage. This is useful for demonstrating the UI flow, but browser-only authentication is **not production-secure**. Clear site storage to remove demo accounts. Never use this approach for real credentials, tickets, or payments.
+React uses session-backed API authentication and database-backed booking
+operations; it does not access MySQL directly. Demo payment collects no real
+payment credentials.

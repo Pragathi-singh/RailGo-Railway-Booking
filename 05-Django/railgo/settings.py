@@ -1,4 +1,8 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,13 +49,20 @@ WSGI_APPLICATION = "railgo.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv("RAILGO_DB_NAME", "railgo_django"),
+        "USER": os.getenv("RAILGO_DB_USER", "railgo_phase2"),
+        "PASSWORD": os.getenv("RAILGO_DB_PASSWORD", ""),
+        "HOST": os.getenv("RAILGO_DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("RAILGO_DB_PORT", "3306"),
+        "OPTIONS": {"charset": "utf8mb4"},
     }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
 ]

@@ -14,8 +14,12 @@ class SignupForm(forms.Form):
     full_name = forms.CharField(max_length=100, label="Full name")
     email = forms.EmailField(max_length=254)
     mobile = forms.CharField(max_length=14, label="Mobile number")
-    password = forms.CharField(min_length=8, widget=forms.PasswordInput, label="Password")
-    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm password")
+    password = forms.CharField(
+        min_length=8, widget=forms.PasswordInput, label="Password"
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput, label="Confirm password"
+    )
 
     def clean_full_name(self):
         value = " ".join(self.cleaned_data["full_name"].split())
@@ -26,7 +30,9 @@ class SignupForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()
         if User.objects.filter(email__iexact=email).exists():
-            raise ValidationError("An account with this email already exists. Try logging in instead.")
+            raise ValidationError(
+                "An account with this email already exists. Try logging in instead."
+            )
         return email
 
     def clean_mobile(self):
@@ -37,13 +43,22 @@ class SignupForm(forms.Form):
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if not re.search(r"[a-z]", password) or not re.search(r"[A-Z]", password) or not re.search(r"\d", password):
-            raise ValidationError("Use at least 8 characters with uppercase, lowercase and a number.")
+        if (
+            not re.search(r"[a-z]", password)
+            or not re.search(r"[A-Z]", password)
+            or not re.search(r"\d", password)
+        ):
+            raise ValidationError(
+                "Use at least 8 characters with uppercase, lowercase and a number."
+            )
         return password
 
     def clean(self):
         cleaned = super().clean()
-        if cleaned.get("password") and cleaned.get("confirm_password") != cleaned["password"]:
+        if (
+            cleaned.get("password")
+            and cleaned.get("confirm_password") != cleaned["password"]
+        ):
             self.add_error("confirm_password", "Your passwords do not match.")
         return cleaned
 
@@ -68,9 +83,15 @@ class LoginForm(forms.Form):
         if cleaned.get("email") and cleaned.get("password"):
             email = cleaned["email"].strip().lower()
             user = User.objects.filter(email__iexact=email).first()
-            authenticated = authenticate(username=user.username, password=cleaned["password"]) if user else None
+            authenticated = (
+                authenticate(username=user.username, password=cleaned["password"])
+                if user
+                else None
+            )
             if authenticated is None:
-                raise ValidationError("We could not match that email and password. Check your details and try again.")
+                raise ValidationError(
+                    "We could not match that email and password. Check your details and try again."
+                )
             cleaned["user"] = authenticated
         return cleaned
 
@@ -99,7 +120,9 @@ class TrainSearchForm(forms.Form):
         origin = cleaned.get("from_station", "").strip()
         destination = cleaned.get("to_station", "").strip()
         if origin and destination and origin.casefold() == destination.casefold():
-            raise ValidationError("Choose different departure and destination stations.")
+            raise ValidationError(
+                "Choose different departure and destination stations."
+            )
         journey_date = cleaned.get("journey_date")
         if journey_date and journey_date < date.today():
             self.add_error("journey_date", "Choose today or a future journey date.")

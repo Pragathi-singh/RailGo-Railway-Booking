@@ -1,1 +1,31 @@
-<main class="results container"><p class="eyebrow">BOOKINGS</p><h1>Your journey history.</h1><div class="empty-state"><div class="empty-icon">⌁</div><h2>No bookings yet</h2><p class="muted">Your completed journeys will appear here when booking services are connected.</p><a class="button" href="#/">Plan a journey</a></div></main>
+<main class="results container">
+  <p class="eyebrow">BOOKINGS</p>
+  <h1>Your journey history.</h1>
+  <div class="empty-state" ng-if="!bookings.length">
+    <div class="empty-icon">⌁</div>
+    <h2>No bookings yet</h2>
+    <p class="muted">Your confirmed demo journeys will appear here.</p>
+    <a class="button" href="#/">Plan a journey</a>
+  </div>
+  <div class="booking-list" ng-if="bookings.length">
+    <article class="profile-card" ng-repeat="booking in bookings">
+      <p class="eyebrow">{{booking.status}}</p>
+      <h2>{{booking.origin}} to {{booking.destination}}</h2>
+      <p>
+        PNR {{booking.pnr}} · {{booking.journeyDate | date:'dd MMMM yyyy'}} ·
+        {{booking.train.name}}
+      </p>
+      <p>
+        {{booking.passengers}} passenger(s) · ₹{{booking.totalFare | number}}
+      </p>
+      <button
+        class="button secondary"
+        type="button"
+        ng-if="booking.status === 'CONFIRMED'"
+        ng-click="cancel(booking)"
+      >
+        Cancel booking
+      </button>
+    </article>
+  </div>
+</main>

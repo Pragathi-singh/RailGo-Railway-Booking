@@ -1,0 +1,21 @@
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base :: layout(~{::main})}"
+>
+  <main class="page container">
+    <p class="eyebrow">DEMO CONFIRMATION</p>
+    <h1>Your journey is confirmed.</h1>
+    <div class="empty-state" th:if="${booking != null}">
+      <h2>PNR <span th:text="${booking.pnr}"></span></h2>
+      <p th:text="${booking.origin + ' → ' + booking.destination}"></p>
+      <p
+        th:text="${booking.journeyDate + ' · ' + booking.travelClass + ' · ' + booking.passengerName}"
+      ></p>
+      <p>
+        This is session-only demo data; no payment or live reservation was made.
+      </p>
+      <a class="button" th:href="@{/history}">View booking history</a>
+    </div>
+  </main>
+</html>

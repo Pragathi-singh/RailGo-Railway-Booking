@@ -1,0 +1,33 @@
+<%- include('partials/header', { title })%>
+<main class="page container">
+    <p class="eyebrow">DEMO PAYMENT</p>
+    <h1>Passenger details</h1>
+    <p>
+        <%= schedule.train_name%> · <%= schedule.journey_date%> · <%= schedule.travel_class%> · ₹<%= schedule.fare%> per passenger
+    </p>
+    <%if (error) {%>
+    <p class="error"><%= error%></p>
+    <%}%>
+    <form method="post" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
+        <label>Passenger count<select name="passengerCount">
+                <%for (let i=1;i<=6;i++) {%>
+                <option><%= i%></option>
+                <%}%>
+            </select></label>
+        <%for (let i=0;i<6;i++) {%>
+        <fieldset>
+            <legend>Passenger <%= i+1%></legend>
+            <label>Name<input name="passengerName" /></label><label>Age<input name="passengerAge" type="number" min="1" max="120" /></label>
+            <label>Gender<select name="passengerGender">
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Other</option>
+                </select></label>
+        </fieldset>
+        <%}%>
+        <p>Safe demonstration payment only. No card details are collected.</p>
+        <button class="button" type="submit">Confirm DEMO booking</button>
+    </form>
+</main>
+<%- include('partials/footer')%>

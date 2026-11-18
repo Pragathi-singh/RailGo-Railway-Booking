@@ -1,0 +1,22 @@
+<%- include('partials/header', { title })%>
+<main class="page container">
+    <p class="eyebrow">BOOKING CONFIRMED</p>
+    <h1>Your RailGo ticket</h1>
+    <article class="profile-card">
+        <h2>PNR <%= booking.pnr%></h2>
+        <p>
+            <%= booking.origin%> → <%= booking.destination%> · <%= booking.journey_date%> · <%= booking.travel_class%>
+        </p>
+        <p><%= booking.booking_status%> · ₹<%= booking.total_fare%></p>
+        <ul>
+            <%passengers.forEach((p) => {%>
+            <li>
+                <%= p.passenger_name%>, <%= p.age%> · <%= p.gender%> · Seat <%= p.seat_number%>
+            </li>
+            <%});%>
+        </ul>
+        <p>Payment: DEMO_CONFIRMED</p>
+        <a class="button" href="/history">My bookings</a>
+    </article>
+</main>
+<%- include('partials/footer')%>

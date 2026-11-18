@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block content %}
+<main class="page container">
+    <h1>Booking confirmed</h1>
+    <article class="profile-card">
+        <h2>PNR {{ booking.pnr }}</h2>
+        <p>
+            {{ booking.origin }} → {{ booking.destination }} · {{ booking.journey_date }} · {{ booking.travel_class }}
+        </p>
+        <p>{{ booking.booking_status }} · ₹{{ booking.total_fare }}</p>
+        {% for passenger in booking.passengers.all %}
+        <p>
+            {{ passenger.passenger_name }}, {{ passenger.age }} · {{ passenger.gender }} · Seat {{ passenger.seat_number }}
+        </p>
+        {% endfor %}
+        <p>Payment: DEMO_CONFIRMED</p>
+        <a class="button" href="{% url 'history' %}">My bookings</a>
+    </article>
+</main>
+{% endblock %}

@@ -1,1 +1,36 @@
-{% extends "base.html" %}{% block title %}Bookings | RailGo{% endblock %}{% block content %}<main class="page container"><p class="eyebrow">BOOKINGS</p><h1>Your journey history.</h1>{% if bookings %}<div class="booking-list">{% for booking in bookings %}<article class="profile-card"><h2>{{ booking.origin }} to {{ booking.destination }}</h2><p>{{ booking.journey_date }} · {{ booking.travel_class }}</p></article>{% endfor %}</div>{% else %}<div class="empty-state"><div class="empty-icon">⌁</div><h2>No bookings yet</h2><p>Your completed journeys will appear here when booking services are connected.</p><a class="button" href="{{ url_for('main.home') }}">Plan a journey</a></div>{% endif %}</main>{% endblock %}
+{%extends "base.html"%}{%block title%}Bookings | RailGo{%endblock%}{%block content%}
+<main class="page container">
+    <p class="eyebrow">BOOKINGS</p>
+    <h1>Your journey history.</h1>
+    {%if bookings%}
+    <div class="booking-list">
+        {%for booking in bookings%}
+        <article class="profile-card">
+            <h2>{{booking.origin}} to {{booking.destination}}</h2>
+            <p>
+                PNR {{booking.pnr}} · {{booking.journey_date}} · {{booking.travel_class}}
+            </p>
+            <p>
+                {{booking.passenger_count}} passenger(s) · ₹{{booking.total_fare}} ·
+                {{booking.booking_status}}
+            </p>
+            <a class="button secondary" href="{{url_for('main.confirmation', booking_id=booking.id)}}">View details</a>{%if booking.booking_status == "CONFIRMED"%}
+            <form method="post" action="{{url_for('main.cancel_booking', booking_id=booking.id)}}">
+                <input type="hidden" name="csrf" value="{{csrf_token()}}" /><button class="button secondary" type="submit">
+                    Cancel booking
+                </button>
+            </form>
+            {%endif%}
+        </article>
+        {%endfor%}
+    </div>
+    {%else%}
+    <div class="empty-state">
+        <div class="empty-icon">⌁</div>
+        <h2>No bookings yet</h2>
+        <p>Your confirmed demo journeys will appear here.</p>
+        <a class="button" href="{{url_for('main.home')}}">Plan a journey</a>
+    </div>
+    {%endif%}
+</main>
+{%endblock%}

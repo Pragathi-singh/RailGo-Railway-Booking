@@ -1,26 +1,53 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102B46">
-    <meta name="description" content="Your RailGo account."><title><%= title %> | RailGo</title>
-    <link rel="stylesheet" href="<%= asset('css/style.css') %>"><script src="<%= asset('js/script.js') %>" defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102B46" />
+    <meta name="description" content="Your RailGo account." />
+    <title><%= title%> | RailGo</title>
+    <link rel="stylesheet" href="<%= asset('css/style.css')%>" />
+    <script src="<%= asset('js/script.js')%>" defer></script>
 </head>
+
 <body>
-<%- include('partials/header') %>
-<main id="main-content" class="dashboard page-width">
-    <% if (flash) { %><p class="notice notice--success" role="status"><%= flash.message %></p><% } %>
-    <p class="eyebrow">YOUR RAILGO ACCOUNT</p>
-    <h1>Welcome, <%= currentUser.fullName %>.</h1>
-    <p class="dashboard__intro">Keep your travel details together and plan your next journey.</p>
-    <section class="account-card" aria-labelledby="account-details">
-        <div><p class="eyebrow">ACCOUNT DETAILS</p><h2 id="account-details">Your profile</h2></div>
-        <dl>
-            <div><dt>Full name</dt><dd><%= currentUser.fullName %></dd></div>
-            <div><dt>Email</dt><dd><%= currentUser.email %></dd></div>
-            <div><dt>Mobile</dt><dd><%= currentUser.mobile %></dd></div>
-        </dl>
-        <p class="notice notice--info">Your profile is ready whenever you are.</p>
-        <a class="button" href="/home#search">Search trains</a>
-    </section>
-</main>
-<%- include('partials/footer') %>
+    <%- include('partials/header')%>
+    <main id="main-content" class="dashboard page-width">
+        <%if (flash) {%>
+        <p class="notice notice--success" role="status"><%= flash.message%></p>
+        <%}%>
+        <p class="eyebrow">YOUR RAILGO ACCOUNT</p>
+        <h1>Welcome, <%= currentUser.fullName%>.</h1>
+        <p class="dashboard__intro">
+            Keep your travel details together and plan your next journey.
+        </p>
+        <section class="account-card" aria-labelledby="account-details">
+            <div>
+                <p class="eyebrow">ACCOUNT DETAILS</p>
+                <h2 id="account-details">Your profile</h2>
+            </div>
+            <dl>
+                <div>
+                    <dt>Full name</dt>
+                    <dd><%= currentUser.fullName%></dd>
+                </div>
+                <div>
+                    <dt>Email</dt>
+                    <dd><%= currentUser.email%></dd>
+                </div>
+                <div>
+                    <dt>Mobile</dt>
+                    <dd><%= currentUser.mobile%></dd>
+                </div>
+            </dl>
+            <p class="notice notice--info">
+                Your profile is ready whenever you are.
+            </p>
+            <a class="button" href="/home#search">Search trains</a>
+        </section>
+    </main>
+    <%- include('partials/footer')%>
+</body>
+
+</html>

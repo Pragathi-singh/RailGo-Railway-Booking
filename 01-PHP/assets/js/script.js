@@ -1,103 +1,113 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navigation = document.querySelector('.primary-nav');
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navigation = document.querySelector(".primary-nav");
 
-    if (menuToggle && navigation) {
-        menuToggle.addEventListener('click', () => {
-            const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', String(!expanded));
-            navigation.classList.toggle('primary-nav--open', !expanded);
-        });
-    }
-
-    document.querySelectorAll('[data-password-toggle]').forEach((button) => {
-        button.addEventListener('click', () => {
-            const input = document.getElementById(button.dataset.passwordToggle);
-            if (!input) return;
-
-            const reveal = input.type === 'password';
-            input.type = reveal ? 'text' : 'password';
-            button.textContent = reveal ? 'Hide' : 'Show';
-            button.setAttribute('aria-label', `${reveal ? 'Hide' : 'Show'} password`);
-            button.setAttribute('aria-pressed', String(reveal));
-        });
+  if (menuToggle && navigation) {
+    menuToggle.addEventListener("click", () => {
+      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!expanded));
+      navigation.classList.toggle("primary-nav--open", !expanded);
     });
+  }
 
-    const swapButton = document.querySelector('[data-swap-stations]');
-    if (swapButton) {
-        swapButton.addEventListener('click', () => {
-            const from = document.getElementById('from-station');
-            const to = document.getElementById('to-station');
-            if (!from || !to) return;
+  document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const input = document.getElementById(button.dataset.passwordToggle);
+      if (!input) return;
 
-            [from.value, to.value] = [to.value, from.value];
-            from.focus();
-        });
-    }
+      const reveal = input.type === "password";
+      input.type = reveal ? "text" : "password";
+      button.textContent = reveal ? "Hide" : "Show";
+      button.setAttribute("aria-label", `${reveal ? "Hide" : "Show"} password`);
+      button.setAttribute("aria-pressed", String(reveal));
+    });
+  });
 
-    const searchForm = document.querySelector('.search-form');
-    if (searchForm) {
-        searchForm.addEventListener('submit', (event) => {
-            const from = document.getElementById('from-station');
-            const to = document.getElementById('to-station');
-            const date = document.getElementById('journey-date');
-            if (!from || !to || !date) return;
+  const swapButton = document.querySelector("[data-swap-stations]");
+  if (swapButton) {
+    swapButton.addEventListener("click", () => {
+      const from = document.getElementById("from-station");
+      const to = document.getElementById("to-station");
+      if (!from || !to) return;
 
-            to.setCustomValidity(
-                from.value.trim() && to.value.trim()
-                && from.value.trim().toLocaleLowerCase() === to.value.trim().toLocaleLowerCase()
-                    ? 'Choose a destination different from your departure station.'
-                    : ''
-            );
+      [from.value, to.value] = [to.value, from.value];
+      from.focus();
+    });
+  }
 
-            if (!searchForm.checkValidity()) {
-                event.preventDefault();
-                searchForm.reportValidity();
-            } else {
-                const submitButton = searchForm.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Searching…';
-                }
-            }
-        });
-    }
+  const searchForm = document.querySelector(".search-form");
+  if (searchForm) {
+    searchForm.addEventListener("submit", (event) => {
+      const from = document.getElementById("from-station");
+      const to = document.getElementById("to-station");
+      const date = document.getElementById("journey-date");
+      if (!from || !to || !date) return;
 
-    const signupForm = document.querySelector('[data-signup-form]');
-    if (signupForm) {
-        signupForm.addEventListener('submit', (event) => {
-            const email = signupForm.querySelector('[name="email"]');
-            const mobile = signupForm.querySelector('[name="mobile"]');
-            const password = signupForm.querySelector('[name="password"]');
-            const confirmation = signupForm.querySelector('[name="confirm_password"]');
-            const cleanMobile = mobile.value.replace(/[\s()-]/g, '');
+      to.setCustomValidity(
+        from.value.trim() &&
+          to.value.trim() &&
+          from.value.trim().toLocaleLowerCase() ===
+            to.value.trim().toLocaleLowerCase()
+          ? "Choose a destination different from your departure station."
+          : "",
+      );
 
-            mobile.setCustomValidity(/^[6-9]\d{9}$/.test(cleanMobile)
-                ? ''
-                : 'Enter a valid 10-digit Indian mobile number.');
-            password.setCustomValidity(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/us.test(password.value)
-                ? ''
-                : 'Use at least 8 characters, including uppercase, lowercase and a number.');
-            confirmation.setCustomValidity(confirmation.value === password.value
-                ? ''
-                : 'Your passwords do not match.');
+      if (!searchForm.checkValidity()) {
+        event.preventDefault();
+        searchForm.reportValidity();
+      } else {
+        const submitButton = searchForm.querySelector('button[type="submit"]');
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = "Searching…";
+        }
+      }
+    });
+  }
 
-            email.setCustomValidity('');
-            if (!email.validity.valid) {
-                email.setCustomValidity('Enter a valid email address.');
-            }
+  const signupForm = document.querySelector("[data-signup-form]");
+  if (signupForm) {
+    signupForm.addEventListener("submit", (event) => {
+      const email = signupForm.querySelector('[name="email"]');
+      const mobile = signupForm.querySelector('[name="mobile"]');
+      const password = signupForm.querySelector('[name="password"]');
+      const confirmation = signupForm.querySelector(
+        '[name="confirm_password"]',
+      );
+      const cleanMobile = mobile.value.replace(/[\s()-]/g, "");
 
-            if (!signupForm.checkValidity()) {
-                event.preventDefault();
-                signupForm.reportValidity();
-                return;
-            }
+      mobile.setCustomValidity(
+        /^[6-9]\d{9}$/.test(cleanMobile)
+          ? ""
+          : "Enter a valid 10-digit Indian mobile number.",
+      );
+      password.setCustomValidity(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/su.test(password.value)
+          ? ""
+          : "Use at least 8 characters, including uppercase, lowercase and a number.",
+      );
+      confirmation.setCustomValidity(
+        confirmation.value === password.value
+          ? ""
+          : "Your passwords do not match.",
+      );
 
-            const submitButton = signupForm.querySelector('button[type="submit"]');
-            if (submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Creating account…';
-            }
-        });
-    }
+      email.setCustomValidity("");
+      if (!email.validity.valid) {
+        email.setCustomValidity("Enter a valid email address.");
+      }
+
+      if (!signupForm.checkValidity()) {
+        event.preventDefault();
+        signupForm.reportValidity();
+        return;
+      }
+
+      const submitButton = signupForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Creating account…";
+      }
+    });
+  }
 });

@@ -1,1 +1,39 @@
-{% extends "base.html" %}{% block title %}Search results | RailGo{% endblock %}{% block content %}<main class="page container"><p class="eyebrow">SEARCH RESULTS</p><h1>Find your next journey.</h1>{% if journey %}<div class="empty-state"><div class="empty-icon">✦</div><h2>No live train results are available right now.</h2><p>We could not retrieve live inventory for <strong>{{ journey.origin }}</strong> to <strong>{{ journey.destination }}</strong> on {{ journey.journey_date }}.</p><a class="button secondary" href="{{ url_for('main.home') }}">Search another route</a></div>{% else %}<div class="empty-state"><h2>Start with a route search</h2><p>Choose your stations, date and travel class to begin.</p><a class="button" href="{{ url_for('main.home') }}">Search trains</a></div>{% endif %}</main>{% endblock %}
+{%extends "base.html"%}{%block title%}Search results | RailGo{%endblock%}{%block content%}
+<main class="page container">
+    <p class="eyebrow">SEARCH RESULTS</p>
+    <h1>Find your next journey.</h1>
+    {%if schedules%}
+    <div class="booking-list">
+        {%for schedule in schedules%}
+        <article class="profile-card">
+            <h2>
+                {{schedule.train.train_name}}
+                <small>{{schedule.train.train_number}}</small>
+            </h2>
+            <p>
+                {{schedule.train.source_station}} → {{schedule.train.destination_station}}
+            </p>
+            <p>
+                {{schedule.train.departure_time}} – {{schedule.train.arrival_time}}
+                · {{schedule.train.duration}} · ₹{{schedule.fare}} · {{schedule.available_seats}} seats
+            </p>
+            <a class="button" href="{{url_for('main.book', schedule_id=schedule.id)}}">Book this train</a>
+        </article>
+        {%endfor%}
+    </div>
+    {%elif journey%}
+    <div class="empty-state">
+        <div class="empty-icon">✦</div>
+        <h2>No demo trains match this search.</h2>
+        <p>Try one of the seeded demo routes or another date.</p>
+        <a class="button secondary" href="{{url_for('main.home')}}">Search another route</a>
+    </div>
+    {%else%}
+    <div class="empty-state">
+        <h2>Start with a route search</h2>
+        <p>Choose your stations, date and travel class to begin.</p>
+        <a class="button" href="{{url_for('main.home')}}">Search trains</a>
+    </div>
+    {%endif%}
+</main>
+{%endblock%}

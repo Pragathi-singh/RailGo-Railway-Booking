@@ -3,68 +3,98 @@ declare(strict_types=1);
 
 function e(string $value): string
 {
-    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8");
 }
 
 function post_string(string $key): string
 {
-    $value = $_POST[$key] ?? '';
+    $value = $_POST[$key] ?? "";
 
-    return is_string($value) ? $value : '';
+    return is_string($value) ? $value : "";
 }
 
 function csrf_token(): string
 {
-    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    if (empty($_SESSION["csrf_token"]) || !is_string($_SESSION["csrf_token"])) {
+        $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
     }
 
-    return $_SESSION['csrf_token'];
+    return $_SESSION["csrf_token"];
 }
 
 function csrf_input(): string
 {
-    return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
+    return '<input type="hidden" name="csrf_token" value="' .
+        e(csrf_token()) .
+        '">';
 }
 
 function valid_csrf(?string $submittedToken): bool
 {
-    return is_string($submittedToken)
-        && isset($_SESSION['csrf_token'])
-        && is_string($_SESSION['csrf_token'])
-        && hash_equals($_SESSION['csrf_token'], $submittedToken);
+    return is_string($submittedToken) &&
+        isset($_SESSION["csrf_token"]) &&
+        is_string($_SESSION["csrf_token"]) &&
+        hash_equals($_SESSION["csrf_token"], $submittedToken);
 }
 
 function add_flash(string $type, string $message): void
 {
-    $_SESSION['flash'][] = ['type' => $type, 'message' => $message];
+    $_SESSION["flash"][] = ["type" => $type, "message" => $message];
+}
+
+function require_login(): array
+{
+    $user = current_user();
+    if ($user === null) {
+        $_SESSION["redirect_after_login"] =
+            $_SERVER["REQUEST_URI"] ?? "index.php";
+        add_flash("error", "Please log in to continue.");
+        redirect("login.php");
+    }
+
+    return $user;
+}
+
+function generate_pnr(PDO $connection): string
+{
+    do {
+        $pnr = "RG" . strtoupper(bin2hex(random_bytes(6)));
+        $statement = $connection->prepare(
+            "SELECT id FROM bookings WHERE pnr = :pnr LIMIT 1",
+        );
+        $statement->execute(["pnr" => $pnr]);
+    } while ($statement->fetch() !== false);
+
+    return $pnr;
 }
 
 function take_flashes(): array
 {
-    $flashes = $_SESSION['flash'] ?? [];
-    unset($_SESSION['flash']);
+    $flashes = $_SESSION["flash"] ?? [];
+    unset($_SESSION["flash"]);
 
     return is_array($flashes) ? $flashes : [];
 }
 
 function redirect(string $location): never
 {
-    header('Location: ' . $location);
-    exit;
+    header("Location: " . $location);
+    exit();
 }
 
 function render_flashes(): void
 {
     foreach (take_flashes() as $flash) {
-        if (!is_array($flash) || !isset($flash['type'], $flash['message'])) {
+        if (!is_array($flash) || !isset($flash["type"], $flash["message"])) {
             continue;
         }
 
-        $type = $flash['type'] === 'success' ? 'success' : 'error';
-        echo '<div class="notice notice--' . $type . '" role="status">'
-            . e((string) $flash['message'])
-            . '</div>';
+        $type = $flash["type"] === "success" ? "success" : "error";
+        echo '<div class="notice notice--' .
+            $type .
+            '" role="status">' .
+            e((string) $flash["message"]) .
+            "</div>";
     }
 }
 
@@ -86,7 +116,7 @@ function render_page_head(string $title, string $description): void
     <?php
 }
 
-function render_brand(string $class = ''): void
+function render_brand(string $class = ""): void
 {
     ?>
     <a class="brand <?= e($class) ?>" href="index.php" aria-label="RailGo home">
@@ -107,8 +137,7 @@ function render_brand(string $class = ''): void
 
 function render_topbar(): void
 {
-    $user = current_user();
-    ?>
+    $user = current_user(); ?>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
         <div class="site-header__inner">
@@ -119,11 +148,14 @@ function render_topbar(): void
             </button>
             <nav class="primary-nav" id="primary-navigation" aria-label="Main navigation">
                 <a href="index.php">Home</a>
-                <a href="index.php#search">Trains</a>
-                <a href="index.php#search">Bookings</a>
+                <a href="search.php">Trains</a>
+                <a href="history.php">Bookings</a>
+                <a href="profile.php">Profile</a>
                 <a href="index.php#support">Help</a>
                 <?php if ($user !== null): ?>
-                    <span class="nav-user">Hello, <?= e($user['full_name']) ?></span>
+                    <span class="nav-user">Hello, <?= e(
+                        $user["full_name"],
+                    ) ?></span>
                     <form class="nav-logout" action="logout.php" method="post">
                         <?= csrf_input() ?>
                         <button class="nav-link-button" type="submit">Log out</button>
@@ -144,7 +176,7 @@ function render_footer(): void
     <footer class="site-footer" id="support">
         <div class="site-footer__main">
             <div class="footer-brand">
-                <?php render_brand('brand--light'); ?>
+                <?php render_brand("brand--light"); ?>
                 <p>Thoughtful journeys begin with a simpler way to plan.</p>
             </div>
             <div class="footer-links">
@@ -161,7 +193,9 @@ function render_footer(): void
             </div>
         </div>
         <div class="site-footer__bottom">
-            <span>&copy; <?= date('Y') ?> RailGo. Your Journey, Our Priority.</span>
+            <span>&copy; <?= date(
+                "Y",
+            ) ?> RailGo. Your Journey, Our Priority.</span>
             <span>Thoughtful journeys begin with a simpler way to plan.</span>
         </div>
     </footer>
@@ -170,24 +204,30 @@ function render_footer(): void
     <?php
 }
 
-function render_auth_aside(string $heading, string $description, array $highlights, string $quote = ''): void
-{
+function render_auth_aside(
+    string $heading,
+    string $description,
+    array $highlights,
+    string $quote = "",
+): void {
     ?>
     <aside class="auth-aside">
         <div class="auth-aside__photo" aria-hidden="true"></div>
         <div class="auth-aside__content">
-            <?php render_brand('brand--light'); ?>
+            <?php render_brand("brand--light"); ?>
             <div class="auth-aside__copy">
                 <p class="eyebrow eyebrow--light">TRAVEL, MADE THOUGHTFUL</p>
                 <h2><?= e($heading) ?></h2>
                 <p class="auth-aside__description"><?= e($description) ?></p>
                 <ul class="auth-highlights">
                     <?php foreach ($highlights as $highlight): ?>
-                        <li><span class="highlight-check" aria-hidden="true">&#10003;</span><?= e($highlight) ?></li>
+                        <li><span class="highlight-check" aria-hidden="true">&#10003;</span><?= e(
+                            $highlight,
+                        ) ?></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
-            <?php if ($quote !== ''): ?>
+            <?php if ($quote !== ""): ?>
                 <blockquote class="travel-quote">
                     <span aria-hidden="true">&ldquo;</span><?= e($quote) ?>
                 </blockquote>
@@ -196,4 +236,78 @@ function render_auth_aside(string $heading, string $description, array $highligh
         </div>
     </aside>
     <?php
+}
+
+function demo_profile(): array
+{
+    $user = current_user();
+    $profile = $_SESSION["demo_profile"] ?? [];
+    return array_merge(
+        [
+            "full_name" => $user["full_name"] ?? "RailGo Demo Traveller",
+            "email" => $user["email"] ?? "traveller@railgo.demo",
+            "mobile" => "9876543210",
+            "address" => "",
+        ],
+        is_array($profile) ? $profile : [],
+    );
+}
+
+function demo_search(): array
+{
+    $search = $_SESSION["demo_search"] ?? [];
+    return is_array($search)
+        ? $search
+        : [
+            "from" => "",
+            "to" => "",
+            "date" => date("Y-m-d"),
+            "class" => "Sleeper",
+        ];
+}
+
+function demo_trains(array $search): array
+{
+    $from = trim((string) ($search["from"] ?? "Mumbai Central"));
+    $to = trim((string) ($search["to"] ?? "New Delhi"));
+    $date = (string) ($search["date"] ?? date("Y-m-d"));
+    $travelClass = (string) ($search["class"] ?? "Sleeper");
+    return [
+        [
+            "number" => "12951",
+            "name" => "Rajdhani Express",
+            "from" => $from ?: "Mumbai Central",
+            "to" => $to ?: "New Delhi",
+            "departure" => "16:55",
+            "arrival" => "08:35",
+            "duration" => "15h 40m",
+            "class" => $travelClass,
+            "fare" => 1450,
+            "availability" => "Available",
+        ],
+        [
+            "number" => "12953",
+            "name" => "August Kranti Rajdhani",
+            "from" => $from ?: "Mumbai Central",
+            "to" => $to ?: "New Delhi",
+            "departure" => "17:40",
+            "arrival" => "10:12",
+            "duration" => "16h 32m",
+            "class" => $travelClass,
+            "fare" => 1325,
+            "availability" => "Waitlist 4",
+        ],
+        [
+            "number" => "12137",
+            "name" => "Punjab Mail",
+            "from" => $from ?: "Mumbai Central",
+            "to" => $to ?: "New Delhi",
+            "departure" => "19:40",
+            "arrival" => "21:55",
+            "duration" => "26h 15m",
+            "class" => $travelClass,
+            "fare" => 780,
+            "availability" => "Available",
+        ],
+    ];
 }

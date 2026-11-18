@@ -1,1 +1,18 @@
-document.addEventListener("DOMContentLoaded",function(){var swap=document.querySelector("[data-swap]");if(swap)swap.addEventListener("click",function(){var a=document.querySelector("#origin"),b=document.querySelector("#destination"),v=a.value;a.value=b.value;b.value=v});document.querySelectorAll("[data-password]").forEach(function(b){b.addEventListener("click",function(){var i=document.querySelector(b.dataset.password);i.type=i.type==="password"?"text":"password";b.textContent=i.type==="password"?"Show":"Hide"})})});
+document.addEventListener("DOMContentLoaded", function () {
+  var swap = document.querySelector("[data-swap]");
+  if (swap)
+    swap.addEventListener("click", function () {
+      var a = document.querySelector("#origin"),
+        b = document.querySelector("#destination"),
+        v = a.value;
+      a.value = b.value;
+      b.value = v;
+    });
+  document.querySelectorAll("[data-password]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = document.querySelector(b.dataset.password);
+      i.type = i.type === "password" ? "text" : "password";
+      b.textContent = i.type === "password" ? "Show" : "Hide";
+    });
+  });
+});

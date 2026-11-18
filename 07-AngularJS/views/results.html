@@ -1,1 +1,42 @@
-<main class="results container"><p class="eyebrow">SEARCH RESULTS</p><h1>Find your next journey.</h1><div class="empty-state" ng-if="!journey"><div class="empty-icon">⌁</div><h2>Start with a route search</h2><p class="muted">Choose your stations, date and travel class to begin.</p><a class="button" href="#/">Search trains</a></div><div class="empty-state" ng-if="journey"><div class="empty-icon">✦</div><h2>No live train results are available right now.</h2><p class="muted">We could not retrieve live inventory for <strong>{{journey.from}}</strong> to <strong>{{journey.to}}</strong> on {{journey.date | date:'dd MMMM yyyy'}}.</p><a class="button secondary" href="#/">Search another route</a></div></main>
+<main class="results container">
+  <p class="eyebrow">SEARCH RESULTS</p>
+  <h1>Find your next journey.</h1>
+  <div class="empty-state" ng-if="!journey">
+    <div class="empty-icon">⌁</div>
+    <h2>Start with a route search</h2>
+    <p class="muted">Choose your stations, date and travel class to begin.</p>
+    <a class="button" href="#/">Search trains</a>
+  </div>
+  <section ng-if="journey">
+    <p class="muted">
+      <strong>{{journey.from}}</strong> → <strong>{{journey.to}}</strong> ·
+      {{journey.date | date:'dd MMMM yyyy'}} · {{journey.travelClass}}
+    </p>
+    <p class="muted">
+      No live train results are available; choose from these demo departures.
+    </p>
+    <div class="profile-card" ng-repeat="train in trains">
+      <h2>{{train.name}} <small>({{train.number}})</small></h2>
+      <p>
+        {{train.departure}} → {{train.arrival}} · {{train.duration}} ·
+        ₹{{train.fare | number}}
+      </p>
+      <label class="field"
+        >Passengers <input type="number" min="1" max="6" ng-model="passengers"
+      /></label>
+      <button class="button" type="button" ng-click="book(train)">
+        Book this train
+      </button>
+    </div>
+    <p class="alert" ng-if="error">{{error}}</p>
+    <article class="profile-card" ng-if="confirmed">
+      <p class="eyebrow">BOOKING CONFIRMED</p>
+      <h2>PNR {{confirmed.pnr}}</h2>
+      <p>
+        {{confirmed.origin}} → {{confirmed.destination}} ·
+        {{confirmed.train.name}} · ₹{{confirmed.totalFare | number}}
+      </p>
+      <a class="button secondary" href="#/history">View my bookings</a>
+    </article>
+  </section>
+</main>

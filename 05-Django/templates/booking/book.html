@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block content %}
+<main class="page container">
+    <h1>Passenger details</h1>
+    <p>
+        {{ schedule.train.train_name }} · {{ schedule.journey_date }} · {{ schedule.travel_class }} · ₹{{ schedule.fare }}
+    </p>
+    {% if error %}
+    <p class="form-alert">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Enter one passenger below. Add more passenger rows as needed.</p>
+        <fieldset>
+            <label>Name<input name="passenger_name" required /></label><label>Age<input name="passenger_age" type="number" min="1" max="120" required /></label><label>Gender<select name="passenger_gender">
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Other</option>
+                </select></label>
+        </fieldset>
+        <button class="button" type="submit">Confirm DEMO booking</button>
+    </form>
+</main>
+{% endblock %}

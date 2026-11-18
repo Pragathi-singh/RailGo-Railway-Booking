@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block content %}
+<main class="page container">
+    <h1>My bookings</h1>
+    {% for booking in bookings %}
+    <article class="profile-card">
+        <h2>PNR {{ booking.pnr }}</h2>
+        <p>
+            {{ booking.origin }} → {{ booking.destination }} · {{ booking.journey_date }} · {{ booking.booking_status }}
+        </p>
+        <a class="button secondary" href="{% url 'confirmation' booking.id %}">View details</a>{% if booking.booking_status == 'CONFIRMED' %}
+        <form method="post" action="{% url 'cancel_booking' booking.id %}">
+            {% csrf_token %}<button class="button secondary">Cancel booking</button>
+        </form>
+        {% endif %}
+    </article>
+    {% empty %}
+    <p>No bookings yet.</p>
+    {% endfor %}
+</main>
+{% endblock %}

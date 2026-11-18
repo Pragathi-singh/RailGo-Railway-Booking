@@ -1,0 +1,16 @@
+<%- include('partials/header', { title })%>
+<main id="main-content" class="page-width">
+    <p class="eyebrow">MY PROFILE</p>
+    <h1>Your profile</h1>
+    <%if (error) {%>
+    <p class="notice notice--error"><%= error%></p>
+    <%}%>
+    <form method="post" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
+        <label>Full name<input name="fullName" value="<%= currentUser.fullName%>" required /></label>
+        <label>Email<input value="<%= currentUser.email%>" disabled /></label>
+        <label>Mobile<input name="mobile" value="<%= currentUser.mobile%>" required /></label>
+        <button class="button" type="submit">Save profile</button>
+    </form>
+</main>
+<%- include('partials/footer')%>
